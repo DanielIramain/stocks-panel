@@ -20,6 +20,26 @@ def mostrarTabla(ts, data):
     print(data)
     print(type(data))
 
+class Fundamentos():
+    def __init__(self, simbolo):
+        self.simbolo = simbolo
+
+    def ObtenerFundamentos(self):
+        FUNCION = 'OVERVIEW'
+        url = av.URL = f'https://www.alphavantage.co/query?function={FUNCION}&symbol={simbolo}&apikey={av.API_KEY}'
+        r = av.requests.get(url)
+        data = r.json()
+
+        print(data)
+    
+    def ObtenerEstadoResultados(self):
+        FUNCION = 'INCOME_STATEMENT'
+        url = av.URL = f'https://www.alphavantage.co/query?function={FUNCION}&symbol={simbolo}&apikey={av.API_KEY}'
+        r = av.requests.get(url)
+        data = r.json()
+
+        print(data)
+
 class SeriesDeTiempo():
     def Intradia(simbolo, intervalo):
         if mercado == 'EEUU' and categoria == 'Historicos':
@@ -46,7 +66,7 @@ class NoticiasAlpha():
     ###Buscar la forma de acceder a la información del JSON (diccionario) => documentación Alpha Vantage oficial
     def NoticiasMercado(simbolo):
         FUNCION = 'NEWS_SENTIMENT'
-        url = av.URL_NOTICIAS = f'https://www.alphavantage.co/query?function={FUNCION}&tickers={simbolo}&apikey={av.API_KEY}'
+        url = av.URL = f'https://www.alphavantage.co/query?function={FUNCION}&tickers={simbolo}&apikey={av.API_KEY}'
         url_request = av.requests.get(url)
         data = url_request.json()
 
@@ -64,17 +84,6 @@ class NoticiasAlpha():
     
     graficador()
 
-class Fundamentos():
-    def __init__(self, simbolo):
-        self.simbolo = simbolo
-
-    def ObtenerFundamentos(self):
-        FUNCION = 'OVERVIEW'
-        url = av.URL_NOTICIAS = f'https://www.alphavantage.co/query?function={FUNCION}&symbol={simbolo}&apikey={av.API_KEY}'
-        r = av.requests.get(url)
-        data = r.json()
-
-        print(data)
 
 f = Fundamentos(simbolo)
-f.ObtenerFundamentos()
+f.ObtenerEstadoResultados()
