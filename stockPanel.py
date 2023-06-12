@@ -20,25 +20,35 @@ def mostrarTabla(ts, data):
     print(data)
     print(type(data))
 
+def elegirFuncion(funcion: str):
+    global funcion_elegida
+    global URL
+    funcion_elegida = funcion
+    URL = f'https://www.alphavantage.co/query?function={funcion_elegida}&symbol={simbolo}&apikey={av.API_KEY}'     
+
+    return funcion_elegida, URL
+
+def solicitarInformacion():
+    r = av.requests.get(URL)
+    data = r.json()
+
+    print(data)
+
 class Fundamentos():
     def __init__(self, simbolo):
         self.simbolo = simbolo
 
     def ObtenerFundamentos(self):
-        FUNCION = 'OVERVIEW'
-        url = av.URL = f'https://www.alphavantage.co/query?function={FUNCION}&symbol={simbolo}&apikey={av.API_KEY}'
-        r = av.requests.get(url)
-        data = r.json()
-
-        print(data)
+        elegirFuncion('OVERVIEW')
+        solicitarInformacion()
     
     def ObtenerEstadoResultados(self):
-        FUNCION = 'INCOME_STATEMENT'
-        url = av.URL = f'https://www.alphavantage.co/query?function={FUNCION}&symbol={simbolo}&apikey={av.API_KEY}'
-        r = av.requests.get(url)
-        data = r.json()
-
-        print(data)
+        elegirFuncion('INCOME_STATEMENT')
+        solicitarInformacion()
+    
+    def ObtenerBalance(self):
+        elegirFuncion('BALANCE_SHEET')
+        solicitarInformacion()
 
 class SeriesDeTiempo():
     def Intradia(simbolo, intervalo):
@@ -84,6 +94,5 @@ class NoticiasAlpha():
     
     graficador()
 
-
 f = Fundamentos(simbolo)
-f.ObtenerEstadoResultados()
+f.ObtenerBalance()
