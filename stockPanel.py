@@ -4,6 +4,7 @@ from alpha_vantage.fundamentaldata import FundamentalData
 import alphaVintageConfig as av
 import matplotlib.pyplot as plt
 import pandas as pd
+import csv
 
 ##Variables globales
 ###mercado = input("Ingrese el mercado que desea (ARG/EEUU): ")
@@ -14,13 +15,13 @@ simbolo = input("Ingrese el simbolo a buscar: ")
 intervalo = input("Ingrese el intervalo a usar: ")
 
 ##Funciones globales
-def mostrarTabla(ts, data):
+def mostrar_tabla(ts, data):
     print(ts)
     print(type(ts))
     print(data)
     print(type(data))
 
-def elegirFuncion(funcion: str):
+def elegir_funcion(funcion: str):
     global funcion_elegida
     global URL
     funcion_elegida = funcion
@@ -28,47 +29,99 @@ def elegirFuncion(funcion: str):
 
     return funcion_elegida, URL
 
-def solicitarInformacion():
+def solicitar_informacion():
     r = av.requests.get(URL)
     data = r.json()
 
     print(data)
 
+def obtener_listado(funcion:str):
+    global funcion_elegida
+    global CSV_URL
+    
+    funcion_elegida = funcion
+    CSV_URL = f'https://www.alphavantage.co/query?function={funcion}&apikey={av.API_KEY}'
+
+    with av.requests.Session() as s:
+        descarga = s.get(CSV_URL)
+        decodificacion = descarga.content.decode('utf-8')
+        cr = csv.reader(decodificacion.splitlines(), delimiter=',')
+        listado = list(cr)
+        ###Si quiero recorrer cada fila e imprimir como una lista cada elemento
+        #for fila in listado:
+            #print(fila)
+        data = pd.DataFrame(listado)
+        print(data)
+
 class Fundamentos():
     def __init__(self, simbolo):
         self.simbolo = simbolo
 
-    def ObtenerFundamentos(self):
-        elegirFuncion('OVERVIEW')
-        solicitarInformacion()
+    def obtener_fundamentos(self):
+        elegir_funcion('OVERVIEW')
+        solicitar_informacion()
     
-    def ObtenerEstadoResultados(self):
-        elegirFuncion('INCOME_STATEMENT')
-        solicitarInformacion()
+    def obtener_estado_resultados(self):
+        elegir_funcion('INCOME_STATEMENT')
+        solicitar_informacion()
     
-    def ObtenerBalance(self):
-        elegirFuncion('BALANCE_SHEET')
-        solicitarInformacion()
+    def obtener_balance(self):
+        elegir_funcion('BALANCE_SHEET')
+        solicitar_informacion()
+    
+    def obtener_clash_flow(self):
+        elegir_funcion('CASH_FLOW')
+        solicitar_informacion()
+    
+    def obtener_ganancias(self):
+        elegir_funcion('EARNINGS')
+        solicitar_informacion()
+
+class DatosMercado():
+    def __init__(self, simbolo) -> None:
+        self.simbolo = simbolo
+    
+    def obtener_activos_vigentes(self):
+        ###Obtener listado de activos en vigencia (imprime por pantalla objeto dataframe)
+        obtener_listado('LISTING_STATUS')
+    
+    def obtener_calendario_ganancias(self):
+        CSV_URL = f'https://www.alphavantage.co/query?function=EARNINGS_CALENDAR&horizon=3month&apikey={av.API_KEY}'
+
+        with av.requests.Session() as s:
+            descarga = s.get(CSV_URL)
+            decodificacion = descarga.content.decode('utf-8')
+            cr = csv.reader(decodificacion.splitlines(), delimiter=',')
+            listado = list(cr)
+            ###Si quiero recorrer cada fila e imprimir como una lista cada elemento
+            #for fila in listado:
+                #print(fila)
+            data = pd.DataFrame(listado)
+
+            print(data)
+    
+    def obtener_calendario_ipo(self):
+        obtener_listado('IPO_CALENDAR')
 
 class SeriesDeTiempo():
     def Intradia(simbolo, intervalo):
         if mercado == 'EEUU' and categoria == 'Historicos':
             ts = TimeSeries(key=av.API_KEY, output_format='pandas')
             data, meta_data = ts.get_intraday(symbol=simbolo, interval=intervalo, outputsize='full')
-            mostrarTabla(ts, data)
+            mostrar_tabla(ts, data)
     def IntradiaExtendido(simbolo, intervalo):
         if mercado == 'EEUU' and categoria == 'Historicos':
             ts = TimeSeries(key=av.API_KEY, output_format='csv')
             data, meta_data = ts.get_intraday_extended(symbol=simbolo, interval=intervalo)
             df = pd.DataFrame(data)
-            mostrarTabla(ts, data)
+            mostrar_tabla(ts, data)
             print(df)
             print(ts)
     def DiarioAjustado(simbolo):
         if mercado == 'EEUU' and categoria == 'Historicos':
             ts = TimeSeries(key=av.API_KEY, output_format='pandas')
             data, meta_data = ts.get_daily_adjusted(simbolo)
-            mostrarTabla(ts, data)
+            mostrar_tabla(ts, data)
 
     #DiarioAjustado(simbolo)
 
@@ -94,5 +147,5 @@ class NoticiasAlpha():
     
     graficador()
 
-f = Fundamentos(simbolo)
-f.ObtenerBalance()
+f = DatosMercado(simbolo)
+f.obtener_calendario_ipo()
