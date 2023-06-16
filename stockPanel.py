@@ -82,25 +82,17 @@ class DatosMercado():
         self.simbolo = simbolo
     
     def obtener_activos_vigentes(self):
-        ###Obtener listado de activos en vigencia (imprime por pantalla objeto dataframe)
+        ###Obtener listado de activos en vigencia (imprime por pantalla un dataframe)
         obtener_listado('LISTING_STATUS')
     
     def obtener_calendario_ganancias(self):
+        ###Obtener listado de companias que presentan ganancias en los proximos meses (3, 6 u 12) 
         CSV_URL = f'https://www.alphavantage.co/query?function=EARNINGS_CALENDAR&horizon=3month&apikey={av.API_KEY}'
 
-        with av.requests.Session() as s:
-            descarga = s.get(CSV_URL)
-            decodificacion = descarga.content.decode('utf-8')
-            cr = csv.reader(decodificacion.splitlines(), delimiter=',')
-            listado = list(cr)
-            ###Si quiero recorrer cada fila e imprimir como una lista cada elemento
-            #for fila in listado:
-                #print(fila)
-            data = pd.DataFrame(listado)
-
-            print(data)
+        obtener_listado('EARNINGS_CALENDAR')
     
     def obtener_calendario_ipo(self):
+        ###Obtener calendario de primera oferta publica en la bolsa (de EEUU)
         obtener_listado('IPO_CALENDAR')
 
 class SeriesDeTiempo():
