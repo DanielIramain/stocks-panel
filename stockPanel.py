@@ -57,7 +57,9 @@ class Fundamentos():
     def __init__(self, simbolo):
         self.simbolo = simbolo
 
-    def obtener_fundamentos(self):
+        return self
+
+    def obtener_fundamentos():
         elegir_funcion('OVERVIEW')
         solicitar_informacion()
     
@@ -78,10 +80,10 @@ class Fundamentos():
         solicitar_informacion()
 
 class DatosMercado():
-    def __init__(self, simbolo) -> None:
-        self.simbolo = simbolo
+    def __init__(self) -> None:
+        return self
     
-    def obtener_activos_vigentes(self):
+    def obtener_activos_vigentes():
         ###Obtener listado de activos en vigencia (imprime por pantalla un dataframe)
         obtener_listado('LISTING_STATUS')
     
@@ -139,5 +141,5 @@ class NoticiasAlpha():
     
     graficador()
 
-f = DatosMercado(simbolo)
-f.obtener_calendario_ipo()
+#f = DatosMercado(simbolo)
+#f.obtener_activos_vigentes()
