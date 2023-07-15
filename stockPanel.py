@@ -63,19 +63,19 @@ class Fundamentos():
         elegir_funcion('OVERVIEW')
         solicitar_informacion()
     
-    def obtener_estado_resultados(self):
+    def obtener_estado_resultados():
         elegir_funcion('INCOME_STATEMENT')
         solicitar_informacion()
     
-    def obtener_balance(self):
+    def obtener_balance():
         elegir_funcion('BALANCE_SHEET')
         solicitar_informacion()
     
-    def obtener_clash_flow(self):
+    def obtener_clash_flow():
         elegir_funcion('CASH_FLOW')
         solicitar_informacion()
     
-    def obtener_ganancias(self):
+    def obtener_ganancias():
         elegir_funcion('EARNINGS')
         solicitar_informacion()
 
