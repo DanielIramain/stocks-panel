@@ -19,6 +19,19 @@ categoria = 'Historicos'
 intervalo = input("Ingrese el intervalo a usar: ")
 
 #Funciones globales
+def capturar_datos():
+    ###Se encarga de capturar los datos mostrados a través de GUI para ser usados en los métodos
+    global simbolo
+    global servicio
+    
+    simbolo = entrada_ticker.get()
+    servicio = combo.get()
+    
+    print('simbolo: ', simbolo)
+    print('servicio: ', servicio)
+    
+    return simbolo
+
 def mostrar_tabla(ts, data):
     print(ts)
     print(type(ts))
@@ -56,14 +69,6 @@ def obtener_listado(funcion:str):
         data = pd.DataFrame(listado)
         print(data)
     
-def capturar_datos():
-    global simbolo
-    
-    simbolo = entrada_ticker.get()
-    
-    print('valor: ', simbolo)
-    
-    return simbolo
 
 class Fundamentos():
     def __init__(self, simbolo):
@@ -72,23 +77,7 @@ class Fundamentos():
         return self
 
     def obtener_fundamentos():
-        elegir_funcion('OVERVIEW')
-        solicitar_informacion()
-    
-    def obtener_estado_resultados():
-        elegir_funcion('INCOME_STATEMENT')
-        solicitar_informacion()
-    
-    def obtener_balance():
-        elegir_funcion('BALANCE_SHEET')
-        solicitar_informacion()
-    
-    def obtener_clash_flow():
-        elegir_funcion('CASH_FLOW')
-        solicitar_informacion()
-    
-    def obtener_ganancias():
-        elegir_funcion('EARNINGS')
+        elegir_funcion(servicio)
         solicitar_informacion()
 
 class DatosMercado():
@@ -161,11 +150,11 @@ root = Tk()
 ticker = StringVar()
 frame = ttk.Frame(root, padding=100)
 combo = ttk.Combobox(state='readonly', 
-                     values=['Fundamentos', 
-                             'Estado de resultados', 
-                             'Balance', 
-                             'Cash Flow',
-                             'Ganancias'])
+                     values=['overview', 
+                             'income_statement', 
+                             'balance_sheet', 
+                             'cash_flow',
+                             'earnings'])
 
 
 frame.grid()
@@ -174,9 +163,8 @@ ttk.Label(frame, text='Escriba el ticker').grid(column=0, row=0)
 entrada_ticker = ttk.Entry(frame)
 entrada_ticker.grid(column=0, row=1)
 
-ttk.Button(frame, text='Enviar', command=Fundamentos.obtener_estado_resultados).grid(column=1, row=0)
-ttk.Button(frame, text='Mostrar', command=capturar_datos).grid(column=2, row=0)
-ttk.Button(frame, text='Mostrar ticker', command='').grid(column=2, row=1)
+ttk.Button(frame, text='Mostrar datos', command=Fundamentos.obtener_fundamentos).grid(column=1, row=0)
+ttk.Button(frame, text='Guardar datos', command=capturar_datos).grid(column=2, row=0)
 combo.place(x=50, y=50)
 
 root.mainloop()
