@@ -1,20 +1,25 @@
-##Imports
-from alpha_vantage.timeseries import TimeSeries
-from alpha_vantage.fundamentaldata import FundamentalData
-import alphaVintageConfig as av
+#Imports
+##Librerias necesarias
 import matplotlib.pyplot as plt
 import pandas as pd
 import csv
 
-##Variables globales
-###mercado = input("Ingrese el mercado que desea (ARG/EEUU): ")
+##Tkinter
+from tkinter import *
+from tkinter import ttk, messagebox
+
+##Alpha Vantage
+from alpha_vantage.timeseries import TimeSeries
+from alpha_vantage.fundamentaldata import FundamentalData
+import alphaVintageConfig as av
+
+#Variables globales
 mercado = 'EEUU'
-###categoria = input("Ingrese la categoría de servicio que desea: ")
 categoria = 'Historicos'
 simbolo = input("Ingrese el simbolo a buscar: ")
 intervalo = input("Ingrese el intervalo a usar: ")
 
-##Funciones globales
+#Funciones globales
 def mostrar_tabla(ts, data):
     print(ts)
     print(type(ts))
@@ -22,12 +27,11 @@ def mostrar_tabla(ts, data):
     print(type(data))
 
 def elegir_funcion(funcion: str):
-    global funcion_elegida
     global URL
-    funcion_elegida = funcion
-    URL = f'https://www.alphavantage.co/query?function={funcion_elegida}&symbol={simbolo}&apikey={av.API_KEY}'     
+    
+    URL = f'https://www.alphavantage.co/query?function={funcion}&symbol={simbolo}&apikey={av.API_KEY}'     
 
-    return funcion_elegida, URL
+    return funcion, URL
 
 def solicitar_informacion():
     r = av.requests.get(URL)
@@ -143,3 +147,5 @@ class NoticiasAlpha():
 
 #f = DatosMercado(simbolo)
 #f.obtener_activos_vigentes()
+
+#GUI
