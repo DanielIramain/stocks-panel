@@ -15,8 +15,7 @@ import alphaVintageConfig as av
 
 #Variables globales
 mercado = 'EEUU'
-categoria = 'Historicos'
-intervalo = input("Ingrese el intervalo a usar: ")
+categoria = 'Historico'
 
 #Funciones globales
 def capturar_datos():
@@ -46,10 +45,30 @@ def elegir_funcion(funcion: str):
     return funcion, URL
 
 def solicitar_informacion():
+    ###Extrae la información solicitada a través de la API y la presenta al cliente
     r = av.requests.get(URL)
+    
     data = r.json()
+    
+    df = pd.DataFrame.from_dict([data])
+    ###Transponemos los datos del df para presentarlos
+    df = pd.DataFrame.transpose(df)
 
-    print(data)
+    if servicio == 'overview':
+        print(df)
+    else:
+        df_normalizado = pd.json_normalize(data)
+        df_normalizado_transpuesto = pd.DataFrame.transpose(df_normalizado)
+        df_reportes_cuatrimestrales = df_normalizado_transpuesto.loc['quarterlyReports']
+        reportes_cuatrimestrales = df_reportes_cuatrimestrales.iloc[0]
+
+        for reporte in range(0, len(reportes_cuatrimestrales), 1):
+            dic_reporte = reportes_cuatrimestrales[reporte]
+            df_dic_reporte = pd.DataFrame([dic_reporte])
+            df_trans_dic_reporte = pd.DataFrame.transpose(df_dic_reporte)
+            print(df_trans_dic_reporte)
+        
+        #df_trans_dic_reporte.to_excel(r'c:\Users\Daniel\Documents\Mis documentos\StocksPanel\prueba.xlsx', index=True)
 
 def obtener_listado(funcion:str):
     global funcion_elegida
@@ -68,10 +87,19 @@ def obtener_listado(funcion:str):
             #print(fila)
         data = pd.DataFrame(listado)
         print(data)
-    
+
+def guardar_excel(nombre: str, df: pd.DataFrame):
+    data_a_excel = pd.ExcelWriter(nombre)
+
+    df.to_excel(data_a_excel)
+
+    data_a_excel.save()
+    print('DataFrame is written to Excel File successfully.')
+
+
 
 class Fundamentos():
-    def __init__(self, simbolo):
+    def __init__(self, simbolo: str):
         self.simbolo = simbolo
 
         return self
@@ -161,10 +189,10 @@ frame.grid()
 ttk.Label(frame, text='Escriba el ticker').grid(column=0, row=0)
 
 entrada_ticker = ttk.Entry(frame)
-entrada_ticker.grid(column=0, row=1)
+entrada_ticker.grid(column=1, row=0)
 
-ttk.Button(frame, text='Mostrar datos', command=Fundamentos.obtener_fundamentos).grid(column=1, row=0)
-ttk.Button(frame, text='Guardar datos', command=capturar_datos).grid(column=2, row=0)
+ttk.Button(frame, text='Mostrar datos', command=Fundamentos.obtener_fundamentos).grid(column=2, row=1)
+ttk.Button(frame, text='Guardar datos', command=capturar_datos).grid(column=1, row=1)
 combo.place(x=50, y=50)
 
 root.mainloop()
