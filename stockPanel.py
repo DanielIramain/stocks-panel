@@ -3,6 +3,8 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import csv
+import openpyxl
+import openpyxl.utils.dataframe
 
 ##Tkinter
 from tkinter import *
@@ -62,13 +64,30 @@ def solicitar_informacion():
         df_reportes_cuatrimestrales = df_normalizado_transpuesto.loc['quarterlyReports']
         reportes_cuatrimestrales = df_reportes_cuatrimestrales.iloc[0]
 
+        ###Creamos un workbook
+        workbook = openpyxl.Workbook()
+        ###Seleccionamos la worksheet
+        worksheet = workbook.active
+
+        ###Escribimos cada df (primero lo transformamos) en worksheet 
         for reporte in range(0, len(reportes_cuatrimestrales), 1):
             dic_reporte = reportes_cuatrimestrales[reporte]
+            
             df_dic_reporte = pd.DataFrame([dic_reporte])
             df_trans_dic_reporte = pd.DataFrame.transpose(df_dic_reporte)
-            print(df_trans_dic_reporte)
-        
+            
+            rows = openpyxl.utils.dataframe.dataframe_to_rows(df_trans_dic_reporte, index=True, header=True)
+            
+            for r in rows:
+                worksheet.append(r)
+            #worksheet.append([])
+
+        workbook.save('prueba.xlsx')
+
+        print(df_trans_dic_reporte)
+            
         #df_trans_dic_reporte.to_excel(r'c:\Users\Daniel\Documents\Mis documentos\StocksPanel\prueba.xlsx', index=True)
+        
 
 def obtener_listado(funcion:str):
     global funcion_elegida
