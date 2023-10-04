@@ -9,9 +9,9 @@ from tkinter import *
 from tkinter import ttk, messagebox
 
 ##Alpha Vantage
-from alpha_vantage.timeseries import TimeSeries
 from alpha_vantage.fundamentaldata import FundamentalData
 import alphaVintageConfig as av
+from alpha_vantage.timeseries import TimeSeries
 
 #Variables globales
 mercado = 'EEUU'
@@ -55,7 +55,7 @@ def solicitar_informacion():
     df = pd.DataFrame.transpose(df)
 
     if servicio == 'overview':
-        print(df)
+        df.to_excel(r'c:\Users\Daniel\Documents\Mis documentos\StocksPanel\prueba.xlsx', index=True)
     else:
         df_normalizado = pd.json_normalize(data)
         df_normalizado_transpuesto = pd.DataFrame.transpose(df_normalizado)
