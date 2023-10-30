@@ -74,17 +74,21 @@ def solicitar_informacion():
             dic_reporte = reportes_cuatrimestrales[reporte]
             
             df_dic_reporte = pd.DataFrame([dic_reporte])
-            #df_trans_dic_reporte = pd.DataFrame.transpose(df_dic_reporte)
             
-            rows = openpyxl.utils.dataframe.dataframe_to_rows(df_dic_reporte, index=True, header=True)
-            
+            #Esta condicion evalua si la hoja de trabajo esta vacia para asignar el header
+            #de lo contrario inserta los datos
+            if worksheet.max_row == 1:
+                rows = openpyxl.utils.dataframe.dataframe_to_rows(df_dic_reporte, index=False, header=True)
+            else:
+                rows = openpyxl.utils.dataframe.dataframe_to_rows(df_dic_reporte, index=False, header=False)
+
             for r in rows:
                 worksheet.append(r)
-            #worksheet.append([])
 
         workbook.save('prueba.xlsx')
 
         print(df_dic_reporte)
+        print(worksheet.max_row)
         
 def obtener_listado(funcion:str):
     global funcion_elegida
