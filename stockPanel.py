@@ -74,9 +74,9 @@ def solicitar_informacion():
             dic_reporte = reportes_cuatrimestrales[reporte]
             
             df_dic_reporte = pd.DataFrame([dic_reporte])
-            df_trans_dic_reporte = pd.DataFrame.transpose(df_dic_reporte)
+            #df_trans_dic_reporte = pd.DataFrame.transpose(df_dic_reporte)
             
-            rows = openpyxl.utils.dataframe.dataframe_to_rows(df_trans_dic_reporte, index=True, header=True)
+            rows = openpyxl.utils.dataframe.dataframe_to_rows(df_dic_reporte, index=True, header=True)
             
             for r in rows:
                 worksheet.append(r)
@@ -84,11 +84,8 @@ def solicitar_informacion():
 
         workbook.save('prueba.xlsx')
 
-        print(df_trans_dic_reporte)
-            
-        #df_trans_dic_reporte.to_excel(r'c:\Users\Daniel\Documents\Mis documentos\StocksPanel\prueba.xlsx', index=True)
+        print(df_dic_reporte)
         
-
 def obtener_listado(funcion:str):
     global funcion_elegida
     global CSV_URL
@@ -115,8 +112,7 @@ def guardar_excel(nombre: str, df: pd.DataFrame):
     data_a_excel.save()
     print('DataFrame is written to Excel File successfully.')
 
-
-
+#Clases
 class Fundamentos():
     def __init__(self, simbolo: str):
         self.simbolo = simbolo
