@@ -1,5 +1,5 @@
 #Imports
-##Librerias necesarias
+##Librerias basicas
 import matplotlib.pyplot as plt
 import pandas as pd
 import csv
@@ -108,14 +108,6 @@ def obtener_listado(funcion:str):
         data = pd.DataFrame(listado)
         print(data)
 
-def guardar_excel(nombre: str, df: pd.DataFrame):
-    data_a_excel = pd.ExcelWriter(nombre)
-
-    df.to_excel(data_a_excel)
-
-    data_a_excel.save()
-    print('DataFrame is written to Excel File successfully.')
-
 #Clases
 class Fundamentos():
     def __init__(self, simbolo: str):
@@ -177,20 +169,6 @@ class NoticiasAlpha():
 
         print(data)
         print(type(data))
-
-    #NoticiasMercado(simbolo)
-
-
-    def graficador():
-        pass
-        #data['4. close'].plot()
-        #plt.title(f'Serie de tiempo intradiario de {simbolo} con un intervalo de {intervalo}')
-        #plt.show()
-    
-    graficador()
-
-#f = DatosMercado(simbolo)
-#f.obtener_activos_vigentes()
 
 #GUI
 root = Tk()
