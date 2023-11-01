@@ -55,14 +55,18 @@ def solicitar_informacion():
     df = pd.DataFrame.from_dict([data])
     ###Transponemos los datos del df para presentarlos
     df = pd.DataFrame.transpose(df)
-
+    ###Pregunta el tipo de servicio y en funcion a eso presenta la informacion
     if servicio == 'overview':
-        df.to_excel(r'c:\Users\Daniel\Documents\Mis documentos\StocksPanel\prueba.xlsx', index=True)
+        df.to_excel(r'D:\Documents\03_Programación y desarrollo\stocks-panel\prueba.xlsx', index=True)
     else:
         df_normalizado = pd.json_normalize(data)
         df_normalizado_transpuesto = pd.DataFrame.transpose(df_normalizado)
-        df_reportes_cuatrimestrales = df_normalizado_transpuesto.loc['quarterlyReports']
-        reportes_cuatrimestrales = df_reportes_cuatrimestrales.iloc[0]
+        if servicio == 'earnings':
+            df_reportes_cuatrimestrales = df_normalizado_transpuesto.loc['quarterlyEarnings']
+            reportes_cuatrimestrales = df_reportes_cuatrimestrales.iloc[0]
+        else:
+            df_reportes_cuatrimestrales = df_normalizado_transpuesto.loc['quarterlyReports']
+            reportes_cuatrimestrales = df_reportes_cuatrimestrales.iloc[0]
 
         ###Creamos un workbook
         workbook = openpyxl.Workbook()
