@@ -185,13 +185,13 @@ combo = ttk.Combobox(state='readonly',
 
 
 frame.grid()
-ttk.Label(frame, text='Escriba el ticker').grid(column=0, row=0)
+ttk.Label(frame, text='Escriba el ticker').pack(side='top')
 
 entrada_ticker = ttk.Entry(frame)
-entrada_ticker.grid(column=1, row=0)
+entrada_ticker.pack(side=TOP)
 
-ttk.Button(frame, text='Mostrar datos', command=Fundamentos.obtener_fundamentos).grid(column=2, row=1)
-ttk.Button(frame, text='Guardar datos', command=capturar_datos).grid(column=1, row=1)
-combo.place(x=50, y=50)
+ttk.Button(frame, text='Mostrar datos', command=Fundamentos.obtener_fundamentos).pack(side=BOTTOM)
+ttk.Button(frame, text='Guardar datos', command=capturar_datos).pack(side=BOTTOM)
+combo.place(x=90, y=30)
 
 root.mainloop()
