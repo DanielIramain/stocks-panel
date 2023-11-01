@@ -11,13 +11,11 @@ from tkinter import *
 from tkinter import ttk, messagebox
 
 ##Alpha Vantage
-from alpha_vantage.fundamentaldata import FundamentalData
 import alphaVintageConfig as av
 from alpha_vantage.timeseries import TimeSeries
 
-#Variables globales
-mercado = 'EEUU'
-categoria = 'Historico'
+##Otros imports
+import config
 
 #Funciones globales
 def capturar_datos():
@@ -143,12 +141,12 @@ class DatosMercado():
 
 class SeriesDeTiempo():
     def Intradia(simbolo, intervalo):
-        if mercado == 'EEUU' and categoria == 'Historicos':
+        if config.mercado == 'EEUU' and config.categoria == 'Historicos':
             ts = TimeSeries(key=av.API_KEY, output_format='pandas')
             data, meta_data = ts.get_intraday(symbol=simbolo, interval=intervalo, outputsize='full')
             mostrar_tabla(ts, data)
     def IntradiaExtendido(simbolo, intervalo):
-        if mercado == 'EEUU' and categoria == 'Historicos':
+        if config.mercado == 'EEUU' and config.categoria == 'Historicos':
             ts = TimeSeries(key=av.API_KEY, output_format='csv')
             data, meta_data = ts.get_intraday_extended(symbol=simbolo, interval=intervalo)
             df = pd.DataFrame(data)
@@ -156,7 +154,7 @@ class SeriesDeTiempo():
             print(df)
             print(ts)
     def DiarioAjustado(simbolo):
-        if mercado == 'EEUU' and categoria == 'Historicos':
+        if config.mercado == 'EEUU' and config.categoria == 'Historicos':
             ts = TimeSeries(key=av.API_KEY, output_format='pandas')
             data, meta_data = ts.get_daily_adjusted(simbolo)
             mostrar_tabla(ts, data)
