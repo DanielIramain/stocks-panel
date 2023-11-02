@@ -22,14 +22,18 @@ def capturar_datos():
     ###Se encarga de capturar los datos mostrados a través de GUI para ser usados en los métodos
     global simbolo
     global servicio
+    global API_KEY
     
     simbolo = entrada_ticker.get()
     servicio = combo.get()
+    API_KEY = entrada_api_key.get()
     
     print('simbolo: ', simbolo)
     print('servicio: ', servicio)
+    print('API KEY: ', API_KEY)
     
     return simbolo
+    #return API_KEY
 
 def mostrar_tabla(ts, data):
     print(ts)
@@ -40,7 +44,7 @@ def mostrar_tabla(ts, data):
 def elegir_funcion(funcion: str):
     global URL
     
-    URL = f'https://www.alphavantage.co/query?function={funcion}&symbol={simbolo}&apikey={av.API_KEY}'     
+    URL = f'https://www.alphavantage.co/query?function={funcion}&symbol={simbolo}&apikey={API_KEY}'     
 
     return funcion, URL
 
@@ -97,7 +101,7 @@ def obtener_listado(funcion:str):
     global CSV_URL
     
     funcion_elegida = funcion
-    CSV_URL = f'https://www.alphavantage.co/query?function={funcion}&apikey={av.API_KEY}'
+    CSV_URL = f'https://www.alphavantage.co/query?function={funcion}&apikey={API_KEY}'
 
     with av.requests.Session() as s:
         descarga = s.get(CSV_URL)
@@ -131,7 +135,7 @@ class DatosMercado():
     
     def obtener_calendario_ganancias(self):
         ###Obtener listado de companias que presentan ganancias en los proximos meses (3, 6 u 12) 
-        CSV_URL = f'https://www.alphavantage.co/query?function=EARNINGS_CALENDAR&horizon=3month&apikey={av.API_KEY}'
+        CSV_URL = f'https://www.alphavantage.co/query?function=EARNINGS_CALENDAR&horizon=3month&apikey={API_KEY}'
 
         obtener_listado('EARNINGS_CALENDAR')
     
@@ -142,12 +146,12 @@ class DatosMercado():
 class SeriesDeTiempo():
     def Intradia(simbolo, intervalo):
         if config.mercado == 'EEUU' and config.categoria == 'Historicos':
-            ts = TimeSeries(key=av.API_KEY, output_format='pandas')
+            ts = TimeSeries(key=API_KEY, output_format='pandas')
             data, meta_data = ts.get_intraday(symbol=simbolo, interval=intervalo, outputsize='full')
             mostrar_tabla(ts, data)
     def IntradiaExtendido(simbolo, intervalo):
         if config.mercado == 'EEUU' and config.categoria == 'Historicos':
-            ts = TimeSeries(key=av.API_KEY, output_format='csv')
+            ts = TimeSeries(key=API_KEY, output_format='csv')
             data, meta_data = ts.get_intraday_extended(symbol=simbolo, interval=intervalo)
             df = pd.DataFrame(data)
             mostrar_tabla(ts, data)
@@ -155,7 +159,7 @@ class SeriesDeTiempo():
             print(ts)
     def DiarioAjustado(simbolo):
         if config.mercado == 'EEUU' and config.categoria == 'Historicos':
-            ts = TimeSeries(key=av.API_KEY, output_format='pandas')
+            ts = TimeSeries(key=API_KEY, output_format='pandas')
             data, meta_data = ts.get_daily_adjusted(simbolo)
             mostrar_tabla(ts, data)
 
@@ -165,7 +169,7 @@ class NoticiasAlpha():
     ###Buscar la forma de acceder a la información del JSON (diccionario) => documentación Alpha Vantage oficial
     def NoticiasMercado(simbolo):
         FUNCION = 'NEWS_SENTIMENT'
-        url = av.URL = f'https://www.alphavantage.co/query?function={FUNCION}&tickers={simbolo}&apikey={av.API_KEY}'
+        url = av.URL = f'https://www.alphavantage.co/query?function={FUNCION}&tickers={simbolo}&apikey={API_KEY}'
         url_request = av.requests.get(url)
         data = url_request.json()
 
@@ -185,10 +189,13 @@ combo = ttk.Combobox(state='readonly',
 
 
 frame.grid()
-ttk.Label(frame, text='Escriba el ticker').pack(side='top')
+ttk.Label(frame, text='Escriba un ticker').pack(side='top')
 
 entrada_ticker = ttk.Entry(frame)
 entrada_ticker.pack(side=TOP)
+ttk.Label(frame, text='Escriba su clave').pack(side='top')
+entrada_api_key = ttk.Entry(frame)
+entrada_api_key.pack(side=TOP)
 
 ttk.Button(frame, text='Mostrar datos', command=Fundamentos.obtener_fundamentos).pack(side=BOTTOM)
 ttk.Button(frame, text='Guardar datos', command=capturar_datos).pack(side=BOTTOM)
