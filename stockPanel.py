@@ -8,6 +8,7 @@ import openpyxl.utils.dataframe
 
 ##Tkinter
 from tkinter import *
+from tkinter.filedialog import asksaveasfile 
 from tkinter import ttk, messagebox
 
 ##Alpha Vantage
@@ -59,7 +60,11 @@ def solicitar_informacion():
     df = pd.DataFrame.transpose(df)
     ###Pregunta el tipo de servicio y en funcion a eso presenta la informacion
     if servicio == 'overview':
-        df.to_excel(r'D:\Documents\03_Programación y desarrollo\stocks-panel\prueba.xlsx', index=True)
+        try:
+            with asksaveasfile(mode='w', defaultextension='.xlsx') as file:
+                df.to_excel(file.name)
+        except AttributeError:
+            print("The user canceled")
     else:
         df_normalizado = pd.json_normalize(data)
         df_normalizado_transpuesto = pd.DataFrame.transpose(df_normalizado)
@@ -149,6 +154,7 @@ class SeriesDeTiempo():
             ts = TimeSeries(key=API_KEY, output_format='pandas')
             data, meta_data = ts.get_intraday(symbol=simbolo, interval=intervalo, outputsize='full')
             mostrar_tabla(ts, data)
+
     def IntradiaExtendido(simbolo, intervalo):
         if config.mercado == 'EEUU' and config.categoria == 'Historicos':
             ts = TimeSeries(key=API_KEY, output_format='csv')
@@ -157,6 +163,7 @@ class SeriesDeTiempo():
             mostrar_tabla(ts, data)
             print(df)
             print(ts)
+
     def DiarioAjustado(simbolo):
         if config.mercado == 'EEUU' and config.categoria == 'Historicos':
             ts = TimeSeries(key=API_KEY, output_format='pandas')
