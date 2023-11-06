@@ -95,8 +95,9 @@ def solicitar_informacion():
 
             for r in rows:
                 worksheet.append(r)
-
-        workbook.save('prueba.xlsx')
+        
+        with asksaveasfile(mode='w', defaultextension='.xlsx') as file:
+            workbook.save(file.name)
 
         print(df_dic_reporte)
         print(worksheet.max_row)
