@@ -1,6 +1,6 @@
 #Imports
 ##Librerias basicas
-import matplotlib.pyplot as plt
+import requests
 import pandas as pd
 import csv
 import openpyxl
@@ -9,10 +9,9 @@ import openpyxl.utils.dataframe
 ##Tkinter
 from tkinter import *
 from tkinter.filedialog import asksaveasfile 
-from tkinter import ttk, messagebox
+from tkinter import ttk
 
 ##Alpha Vantage
-import alphaVintageConfig as av
 from alpha_vantage.timeseries import TimeSeries
 
 ##Otros imports
@@ -51,7 +50,7 @@ def elegir_funcion(funcion: str):
 
 def solicitar_informacion():
     ###Extrae la información solicitada a través de la API y la presenta al cliente
-    r = av.requests.get(URL)
+    r = requests.get(URL)
     
     data = r.json()
     
@@ -109,7 +108,7 @@ def obtener_listado(funcion:str):
     funcion_elegida = funcion
     CSV_URL = f'https://www.alphavantage.co/query?function={funcion}&apikey={API_KEY}'
 
-    with av.requests.Session() as s:
+    with requests.Session() as s:
         descarga = s.get(CSV_URL)
         decodificacion = descarga.content.decode('utf-8')
         cr = csv.reader(decodificacion.splitlines(), delimiter=',')
@@ -177,8 +176,8 @@ class NoticiasAlpha():
     ###Buscar la forma de acceder a la información del JSON (diccionario) => documentación Alpha Vantage oficial
     def NoticiasMercado(simbolo):
         FUNCION = 'NEWS_SENTIMENT'
-        url = av.URL = f'https://www.alphavantage.co/query?function={FUNCION}&tickers={simbolo}&apikey={API_KEY}'
-        url_request = av.requests.get(url)
+        url = URL = f'https://www.alphavantage.co/query?function={FUNCION}&tickers={simbolo}&apikey={API_KEY}'
+        url_request = requests.get(url)
         data = url_request.json()
 
         print(data)
