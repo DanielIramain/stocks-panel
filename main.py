@@ -1,32 +1,16 @@
 import requests
 import pandas as pd
-import openpyxl
 from tkinter.filedialog import asksaveasfile 
 
+import openpyxl
 import openpyxl.utils.dataframe
 
-def capturar_datos() -> None:
-    from view import entrada_ticker, combo, entrada_api_key
-    ###Se encarga de capturar los datos mostrados a través de GUI para ser usados en los métodos
-    global simbolo
-    global servicio
-    global API_KEY
-    
-    simbolo = entrada_ticker.get()
-    servicio = combo.get()
-    API_KEY = entrada_api_key.get()
-    
-    print('simbolo: ', simbolo)
-    print('servicio: ', servicio)
-    print('API KEY: ', API_KEY)
-    
-    #return simbolo
-    #return API_KEY
+import view
 
 def elegir_funcion(funcion: str):
     global URL
     
-    URL = f'https://www.alphavantage.co/query?function={funcion}&symbol={simbolo}&apikey={API_KEY}'     
+    URL = f'https://www.alphavantage.co/query?function={funcion}&symbol={view.simbolo}&apikey={view.API_KEY}'    
 
     #return funcion, URL
 
@@ -40,7 +24,7 @@ def solicitar_informacion():
     ###Transponemos los datos del df para presentarlos
     df = pd.DataFrame.transpose(df)
     ###Pregunta el tipo de servicio y en funcion a eso presenta la informacion
-    if servicio == 'overview':
+    if view.servicio == 'overview':
         try:
             with asksaveasfile(mode='w', defaultextension='.xlsx') as file:
                 df.to_excel(file.name)
@@ -49,7 +33,7 @@ def solicitar_informacion():
     else:
         df_normalizado = pd.json_normalize(data)
         df_normalizado_transpuesto = pd.DataFrame.transpose(df_normalizado)
-        if servicio == 'earnings':
+        if view.servicio == 'earnings':
             df_reportes_cuatrimestrales = df_normalizado_transpuesto.loc['quarterlyEarnings']
             reportes_cuatrimestrales = df_reportes_cuatrimestrales.iloc[0]
         else:

@@ -1,9 +1,28 @@
-from tkinter import *
-from tkinter import ttk
+#from tkinter import *
+from tkinter import Tk, ttk
 from tkinter import BOTTOM, TOP
 
-from controller import capturar_datos
-from stockPanel import Fundamentos
+def capturar_datos() -> None:
+    ###Se encarga de capturar los datos mostrados a través de GUI para ser usados en los métodos
+    global simbolo
+    global servicio
+    global API_KEY
+    
+    simbolo = entrada_ticker.get()
+    servicio = combo.get()
+    API_KEY = entrada_api_key.get()
+    
+    print('simbolo: ', simbolo)
+    print('servicio: ', servicio)
+    print('API KEY: ', API_KEY)
+    
+    #return simbolo
+    #return API_KEY
+
+def obtener_fundamentos():
+        from main import elegir_funcion, solicitar_informacion
+        elegir_funcion(servicio)
+        solicitar_informacion()
 
 #GUI
 ###Ventana principal de la aplicacion
@@ -27,7 +46,7 @@ entrada_api_key = ttk.Entry(frame)
 entrada_api_key.pack(side=TOP)
 
 ttk.Button(frame, text='Salir', command=quit).pack(side=BOTTOM)
-ttk.Button(frame, text='Mostrar datos', command=Fundamentos.obtener_fundamentos).pack(side=BOTTOM)
+ttk.Button(frame, text='Mostrar datos', command=obtener_fundamentos).pack(side=BOTTOM)
 ttk.Button(frame, text='Guardar datos', command=capturar_datos).pack(side=BOTTOM)
 combo.place(x=90, y=30)
 
