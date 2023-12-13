@@ -17,13 +17,13 @@ def elegir_funcion(funcion: str):
 def solicitar_informacion():
     ###Extrae la información solicitada a través de la API y la presenta al cliente
     r = requests.get(URL)
-    
     data = r.json()
-    
+    ###Convertimos a df y transponemos los datos del df para presentarlos
     df = pd.DataFrame.from_dict([data])
-    ###Transponemos los datos del df para presentarlos
     df = pd.DataFrame.transpose(df)
+    
     ###Pregunta el tipo de servicio y en funcion a eso presenta la informacion
+    ###Para el caso de overview
     if view.servicio == 'overview':
         try:
             with asksaveasfile(mode='w', defaultextension='.xlsx') as file:
@@ -33,6 +33,7 @@ def solicitar_informacion():
     else:
         df_normalizado = pd.json_normalize(data)
         df_normalizado_transpuesto = pd.DataFrame.transpose(df_normalizado)
+        ###Para los demas casos:
         if view.servicio == 'earnings':
             df_reportes_cuatrimestrales = df_normalizado_transpuesto.loc['quarterlyEarnings']
             reportes_cuatrimestrales = df_reportes_cuatrimestrales.iloc[0]
