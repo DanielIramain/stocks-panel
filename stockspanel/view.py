@@ -4,7 +4,7 @@ from tkinter import BOTTOM, TOP
 def obtener_fundamentos():
         ###Se encarga de capturar los datos mostrados a través de GUI para ser usados en los métodos
         ###Luego llama a las funciones que corresponden
-        from main import elegir_funcion, solicitar_informacion
+        from stockspanel import elegir_funcion, solicitar_informacion
         global simbolo
         global servicio
         global API_KEY

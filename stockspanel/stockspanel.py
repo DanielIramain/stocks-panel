@@ -10,15 +10,15 @@ import view
 def elegir_funcion(funcion: str):
     global URL
     
-    URL = f'https://www.alphavantage.co/query?function={funcion}&symbol={view.simbolo}&apikey={view.API_KEY}'    
-
-    #return funcion, URL
+    URL = f'https://www.alphavantage.co/query?function={funcion}&symbol={view.simbolo}&apikey={view.API_KEY}'
 
 def solicitar_informacion():
-    ###Extrae la información solicitada a través de la API y la presenta al cliente
+    '''
+    Extrae la información solicitada a través de la API y la presenta al cliente
+    Convertimos a df y transponemos los datos del df para presentarlos
+    '''
     r = requests.get(URL)
     data = r.json()
-    ###Convertimos a df y transponemos los datos del df para presentarlos
     df = pd.DataFrame.from_dict([data])
     df = pd.DataFrame.transpose(df)
     
