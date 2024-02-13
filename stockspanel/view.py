@@ -23,7 +23,6 @@ def obtener_fundamentos():
         solicitar_informacion()
 
 #GUI
-###Ventana principal de la aplicacion
 root = Tk()
 frame = ttk.Frame(root, padding=100)
 combo = ttk.Combobox(root, state='readonly', 
