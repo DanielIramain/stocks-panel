@@ -1,7 +1,7 @@
 import requests
-import pandas as pd
 from tkinter.filedialog import asksaveasfile 
 
+import pandas as pd
 import openpyxl
 import openpyxl.utils.dataframe
 
@@ -14,16 +14,18 @@ def elegir_funcion(funcion: str):
 
 def solicitar_informacion():
     '''
-    Extrae la información solicitada a través de la API y la presenta al cliente
-    Convertimos a df y transponemos los datos del df para presentarlos
+    Extrae la información solicitada a través de la API
+    Convertimos de JSON a dataframe y transponemos los datos para presentarlos
     '''
-    r = requests.get(URL)
-    data = r.json()
+    request = requests.get(URL)
+    data = request.json()
     df = pd.DataFrame.from_dict([data])
     df = pd.DataFrame.transpose(df)
     
-    ###Pregunta el tipo de servicio y en funcion a eso presenta la informacion
-    ###Para el caso de overview
+    '''
+    Pregunta el tipo de servicio y en funcion a ello presenta la informacion
+    La estructura de control esta definida segun el servicio solicitado
+    '''
     if view.servicio == 'overview':
         try:
             with asksaveasfile(mode='w', defaultextension='.xlsx') as file:
