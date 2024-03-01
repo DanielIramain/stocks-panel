@@ -7,6 +7,7 @@ def obtener_fundamentos():
         Luego llama a las funciones que corresponden
         '''
         from stockspanel import elegir_funcion, solicitar_informacion
+        
         global simbolo
         global servicio
         global API_KEY
@@ -15,10 +16,6 @@ def obtener_fundamentos():
         servicio = combo.get()
         API_KEY = entrada_api_key.get()
         
-        print('simbolo: ', simbolo)
-        print('servicio: ', servicio)
-        print('API KEY: ', API_KEY)
-
         elegir_funcion(servicio)
         solicitar_informacion()
 
@@ -44,7 +41,7 @@ entrada_api_key = ttk.Entry(frame)
 entrada_api_key.pack(side=TOP)
 
 ttk.Button(frame, text='Salir', command=quit).pack(side=BOTTOM)
-ttk.Button(frame, text='Mostrar datos', command=obtener_fundamentos).pack(side=BOTTOM)
+ttk.Button(frame, text='Guardar datos', command=obtener_fundamentos).pack(side=BOTTOM)
 
 combo.place(x=90, y=30)
 

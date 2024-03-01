@@ -8,9 +8,9 @@ import openpyxl.utils.dataframe
 import view
 
 def elegir_funcion(funcion: str):
-    global URL
-    
     URL = f'https://www.alphavantage.co/query?function={funcion}&symbol={view.simbolo}&apikey={view.API_KEY}'
+
+    return URL
 
 def solicitar_informacion():
     '''
@@ -19,6 +19,8 @@ def solicitar_informacion():
     '''
     global data
     global df
+    
+    URL = elegir_funcion()
 
     request = requests.get(URL)
     data = request.json()
@@ -28,6 +30,7 @@ def solicitar_informacion():
     presentar_informacion()
 
 def presentar_informacion():
+    global reportes_cuatrimestrales
     '''
     Pregunta el tipo de servicio y en funcion a ello presenta la informacion
     La estructura de control esta definida segun el servicio solicitado
@@ -57,6 +60,9 @@ def presentar_informacion():
             df_reportes_cuatrimestrales = df_normalizado_transpuesto.loc['quarterlyReports']
             reportes_cuatrimestrales = df_reportes_cuatrimestrales.iloc[0]
 
+        guardar_informacion()
+
+def guardar_informacion() -> None:
         '''
         Creamos un workbook
         Seleccionamos la worksheet
