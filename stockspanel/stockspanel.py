@@ -17,10 +17,12 @@ def solicitar_informacion():
     Extrae la información solicitada a través de la API
     Convertimos de JSON a dataframe y transponemos los datos para presentarlos
     '''
+    from view import servicio
+
     global data
     global df
     
-    URL = elegir_funcion()
+    URL = elegir_funcion(servicio)
 
     request = requests.get(URL)
     data = request.json()
