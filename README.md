@@ -7,3 +7,8 @@ Los datos son devueltos en formato .xlsx (Excel) para ser posteriormente procesa
 - Cash flow: estado financiero donde se muestran los flujos de fondos
 - Earnings: datos sobre la fecha de presentación de resultados, ganancias por acción presentadas, EPS esperada y el nivel de "sorpresa" absoluta y relativa.
 
+## Cómo utilizarlo
+Se debe reclamar la free API key en [title](https://www.alphavantage.co/support/#api-key). Una vez obtenida, podemos ejecutar el script de Python que abrirá una aplicación de escritorio. Allí nos solicitará los siguientes datos:
+1. Servicio a utilizar (información requerida)
+2. Ticker
+3. API key obtenida
