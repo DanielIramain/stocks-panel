@@ -1,5 +1,5 @@
 # Software de información financiera
-Esta aplicación de escritorio facilita la obtención de información financiera de empresas cotizantes en la bolsa de valores de EEUU a través de la API de la cía. Alpha Vantage. 
+Esta aplicación de escritorio facilita la obtención de información financiera de empresas cotizantes en la bolsa de valores de EEUU a través de la API de la compañía Alpha Vantage. 
 Los datos son devueltos en formato .xlsx (Excel) para ser posteriormente procesados ya sea por SGBD o plataformas de inteligencia empresarial como Power BI. Actualmente cuenta con **cinco opciones**:
 - Overview: información general de la compañía
 - Income statement: estados de resultados de los últimos 5 períodos
