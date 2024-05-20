@@ -1,5 +1,4 @@
 from tkinter import Tk, ttk
-from tkinter import BOTTOM, TOP
 
 #GUI
 class StockPanel:
@@ -26,23 +25,23 @@ class StockPanel:
                 self.close_button = ttk.Button(master, text='Salir', command=master.quit)
                 self.close_button.pack()
 
-                self.save_button = ttk.Button(master, text='Guardar datos', command=self.obtener_fundamentos)
+                self.save_button = ttk.Button(master, text='Guardar datos', command=self.capture_data)
                 self.save_button.pack()
 
-        def obtener_fundamentos(self):
+        def capture_data(self):
                 '''
                 Se encarga de capturar los datos mostrados a través de la GUI para ser usados en los métodos
                 Luego llama a las funciones que corresponden
                 '''
-                from stockspanel import elegir_funcion, solicitar_informacion
+                from stockspanel import choose_service, request_information
                 
-                global simbolo
-                global servicio
-                global API_KEY
+                global service
+                global simbol
+                global api_key
                 
-                servicio = self.combo.get()
-                simbolo = self.ticker.get()
-                API_KEY = self.api_key.get()
+                service = self.combo.get()
+                simbol = self.ticker.get()
+                api_key = self.api_key.get()
                 
-                elegir_funcion(servicio)
-                solicitar_informacion()
+                choose_service(service)
+                request_information()
