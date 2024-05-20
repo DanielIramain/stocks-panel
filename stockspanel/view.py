@@ -1,48 +1,48 @@
 from tkinter import Tk, ttk
 from tkinter import BOTTOM, TOP
 
-def obtener_fundamentos():
-        '''
-        Se encarga de capturar los datos mostrados a través de la GUI para ser usados en los métodos
-        Luego llama a las funciones que corresponden
-        '''
-        from stockspanel import elegir_funcion, solicitar_informacion
-        
-        global simbolo
-        global servicio
-        global API_KEY
-        
-        simbolo = entrada_ticker.get()
-        servicio = combo.get()
-        API_KEY = entrada_api_key.get()
-        
-        elegir_funcion(servicio)
-        solicitar_informacion()
-
 #GUI
-root = Tk()
-frame = ttk.Frame(root, padding=100)
-combo = ttk.Combobox(root, state='readonly', 
+class StockPanel:
+        def __init__(self, master) -> None:
+                self.master = master
+                master.title('Stock Panel')
+
+                self.combo = ttk.Combobox(master, state='readonly', 
                      values=['overview', 
                              'income_statement', 
                              'balance_sheet', 
                              'cash_flow',
                              'earnings'])
+                self.combo.pack()
 
+                self.label_ticker = ttk.Label(master, text='Escriba un ticker').pack(side='top')
+                self.ticker = ttk.Entry(master)
+                self.ticker.pack()
 
-frame.grid()
+                self.label_key = ttk.Label(master, text='Escriba su clave').pack(side='top')
+                self.api_key = ttk.Entry(master)
+                self.api_key.pack()
 
-ttk.Label(frame, text='Escriba un ticker').pack(side='top')
-entrada_ticker = ttk.Entry(frame)
-entrada_ticker.pack(side=TOP)
+                self.close_button = ttk.Button(master, text='Salir', command=master.quit)
+                self.close_button.pack()
 
-ttk.Label(frame, text='Escriba su clave').pack(side='top')
-entrada_api_key = ttk.Entry(frame)
-entrada_api_key.pack(side=TOP)
+                self.save_button = ttk.Button(master, text='Guardar datos', command=self.obtener_fundamentos)
+                self.save_button.pack()
 
-ttk.Button(frame, text='Salir', command=quit).pack(side=BOTTOM)
-ttk.Button(frame, text='Guardar datos', command=obtener_fundamentos).pack(side=BOTTOM)
-
-combo.place(x=90, y=30)
-
-root.mainloop()
+        def obtener_fundamentos(self):
+                '''
+                Se encarga de capturar los datos mostrados a través de la GUI para ser usados en los métodos
+                Luego llama a las funciones que corresponden
+                '''
+                from stockspanel import elegir_funcion, solicitar_informacion
+                
+                global simbolo
+                global servicio
+                global API_KEY
+                
+                servicio = self.combo.get()
+                simbolo = self.ticker.get()
+                API_KEY = self.api_key.get()
+                
+                elegir_funcion(servicio)
+                solicitar_informacion()
